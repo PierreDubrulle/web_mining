@@ -45,9 +45,9 @@ class VideoCamera(object):
         self.faceCascade = cv2.CascadeClassifier(self.cascadePath)
         self.model = FacialExpressionModel("model.json", "model_weights.h5")
         self.nom = 'Inconnu'
-        self.mp_drawing = mp.solutions.drawing_utils
-        self.mp_drawing_styles = mp.solutions.drawing_styles
-        self.mp_hands = mp.solutions.hands
+        # self.mp_drawing = mp.solutions.drawing_utils
+        # self.mp_drawing_styles = mp.solutions.drawing_styles
+        # self.mp_hands = mp.solutions.hands
         self.padding=20
         self.font = cv2.FONT_HERSHEY_DUPLEX
         faceProto="./models2/opencv_face_detector.pbtxt"
@@ -233,7 +233,7 @@ def gen(camera):
         except:
             yield 'Error'
         try:
-            nom, confidence,prediciton, x, y, h, w= camera.visage_recognition(frame)
+            nom, confidence,prediciton, x, y, h, w = camera.visage_recognition(frame)
         except:
             yield 'Error'
         try:
@@ -313,8 +313,10 @@ def gen(camera):
 
 
 if __name__=='__main__':
-    import os
-    os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+    # import os 
+    # os.environ['TF_CPP_MIN_LOG_LEVEL']='2'
+    # import tensorflow as tf
+
     gen(VideoCamera())
 
 
