@@ -172,6 +172,8 @@ while True:
  
     # Capture d'une image de la webcam
     ret, image = cap.read()
+    if not ret:
+        break
     # image = cv2.imread('Photo le 09-03-2023 à 05.53.jpg')
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
