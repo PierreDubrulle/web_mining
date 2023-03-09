@@ -1,21 +1,24 @@
 import cv2
 import speech_recognition as sr
-import multiprocessing as mp
+import threading
 
 # Créer une classe pour la webcam
 class Webcam():
-    def __init__(self, stop_flag):
+    def __init__(self):
         self._cap = cv2.VideoCapture(0)
-        self._stop_flag = stop_flag
+        self._stop_flag = False
 
     def start(self):
-        while not self._stop_flag.value:
+        while not self._stop_flag:
             ret, frame = self._cap.read()
             cv2.imshow('Webcam', frame)
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
         self._cap.release()
         cv2.destroyAllWindows()
+
+    def stop(self):
+        self._stop_flag = True
 
 # Fonction pour traiter les commandes vocales
 def process_commands(webcam):
@@ -34,16 +37,13 @@ def process_commands(webcam):
                 print("Commande détectée: " + command)
 
                 # Traitement des commandes
-                if 'oui' in command:
-                    # Démarrer la webcam dans un nouveau processus
-                    stop_flag = mp.Value('i', False)
-                    webcam = Webcam(stop_flag) # création d'une instance de la webcam avec le stop_flag
-                    p = mp.Process(target=webcam.start)
-                    p.start()
+                if 'webcam' in command:
+                    # Démarrer la webcam dans un nouveau thread
+                    webcam_thread = threading.Thread(target=webcam.start)
+                    webcam_thread.start()
                 elif 'stop' in command:
                     # Envoyer un signal à la webcam pour l'arrêter
-                    stop_flag.value = True
-                    p.join() # Attendre que le processus se termine
+                    webcam.stop()
                     break
 
             except sr.UnknownValueError:
@@ -53,14 +53,14 @@ def process_commands(webcam):
 
 if __name__ == '__main__':
     # Créer une instance de la webcam
-    webcam = Webcam(None)
+    webcam = Webcam()
 
-    # Créer un nouveau processus pour traiter les commandes vocales
-    p = mp.Process(target=process_commands, args=(webcam,))
-    p.start()
+    # Lancer le processus pour traiter les commandes vocales
+    process_thread = threading.Thread(target=process_commands, args=(webcam,))
+    process_thread.start()
 
     # Attendre que le processus se termine
-    p.join()
+    process_thread.join()
 
     # Fermer la fenêtre de la webcam
     cv2.destroyAllWindows()
