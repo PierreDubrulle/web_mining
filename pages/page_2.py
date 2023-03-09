@@ -1,9 +1,13 @@
-import cv2
 import streamlit as st
+import cv2
 import numpy as np
 from tensorflow.keras.models import model_from_json
 from concurrent.futures import ThreadPoolExecutor
 
+
+st.markdown("# Page 2 ❄️")
+st.sidebar.markdown("# Page 2 ❄️")
+st.title('Reconnaissance faciale')
 
 
 
