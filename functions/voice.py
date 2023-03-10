@@ -12,8 +12,8 @@ import time
 def age_genre(frame):
 
     ageList=['(0-2)', '(4-6)', '(8-12)', '(15-20)', '(25-32)', '(38-43)', '(48-53)', '(60-100)']
-    gender_net = cv2.dnn.readNetFromCaffe("models2/gender_deploy.prototxt", "models2/gender_net.caffemodel")
-    age_net = cv2.dnn.readNetFromCaffe("models2/age_deploy.prototxt", "models2/age_net.caffemodel")
+    gender_net = cv2.dnn.readNetFromCaffe("../docker/models2/gender_deploy.prototxt", "../docker/models2/gender_net.caffemodel")
+    age_net = cv2.dnn.readNetFromCaffe("../docker/models2/age_deploy.prototxt", "../docker/models2/age_net.caffemodel")
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
     faces = face_cascade.detectMultiScale(gray, scaleFactor=1.3, minNeighbors=5)
@@ -49,7 +49,7 @@ names = ['antoine', 'axel','christelle_cor', 'christelle_kie', 'chrystelle','fat
             'nawres','pauline','pierre','robin','samuel','tho','titouan']
 
 recognizer = cv2.face.LBPHFaceRecognizer_create()
-recognizer.read('trainer.yml')
+recognizer.read('../docker/trainer.yml')
 # Chargement du modèle de détection de visages de OpenCV
 face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_frontalface_default.xml")
 eyeCascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_eye.xml')
@@ -82,7 +82,7 @@ class FacialExpressionModel(object):
 
 def sentiment(frame):
 
-    model = FacialExpressionModel("model.json", "model_weights.h5")
+    model = FacialExpressionModel("../docker/model.json", "../docker/model_weights.h5")
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
     faces = face_cascade.detectMultiScale(gray, scaleFactor=1.3, minNeighbors=5)
