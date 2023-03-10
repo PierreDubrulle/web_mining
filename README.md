@@ -23,11 +23,11 @@ Créer un environnement virtuel et l'activer
 Installer les librairies avec  
 
 ```python
-pip install -r requirements.txt
+pip install -r docker/requirements.txt
 ```
 Lancer les différentes fonctions
 ```python
-python <nomdufichier.py>
+python functions/<nomdufichier.py>
 ```
 
 ### Docker
