@@ -3,7 +3,7 @@ import cv2
 import numpy as np
 from tensorflow.keras.models import model_from_json
 from concurrent.futures import ThreadPoolExecutor
-
+import time
 
 st.markdown("# Page 2 ❄️")
 st.sidebar.markdown("# Page 2 ❄️")
@@ -48,8 +48,8 @@ def age_genre(frame):
 
 
 names = ['antoine', 'axel','christelle_cor', 'christelle_kie', 'chrystelle','fatimetou',
-            'florian','hugo','ibtissam','laura','leo','loic','louison','martin','matthieu',
-            'pauline','pierre','robin','samuel','tho','titouan']
+            'florian','hugo','ibtissam','kenan','laura','leo','loic','louison','martin','matthieu',
+            'nawres','pauline','pierre','robin','samuel','tho','titouan']
 
 recognizer = cv2.face.LBPHFaceRecognizer_create()
 recognizer.read('trainer.yml')
@@ -195,27 +195,28 @@ def main():
             
 
 
-        cv2.putText(image, label, (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 0), 2)
-        cv2.putText(image, nom, (x, y - 40), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 0), 2)
-        cv2.putText(image, confidence, (x, y - 80), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 0), 2)
-        cv2.putText(image, emotion, (x, y - 120), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 0), 2)
-        cv2.rectangle(image, (x, y), (x + w, y + h), (0, 255, 0), 2)
-
-        FRAME_WINDOW.image(image)
+        cv2.putText(gray, label, (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 0), 2)
+        cv2.putText(gray, nom, (x, y - 40), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 0), 2)
+        cv2.putText(gray, confidence, (x, y - 80), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 0), 2)
+        cv2.putText(gray, emotion, (x, y - 120), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 0), 2)
+        cv2.rectangle(gray, (x, y), (x + w, y + h), (0, 255, 0), 2)
+        time.sleep(0.1)
+        if int(confidence.split('%')[0]) > 70:
+            st.write(f'You are {nom}, {label}, you seem to be {emotion}. But we are only {confidence} sure')
+        FRAME_WINDOW.image(gray)
         
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
-
 # Arrêt de la capture vidéo et fermeture de la fenêtre
 
 
 
 
-st.title("Webcam Live Feed")
 FRAME_WINDOW = st.image([])
 run = st.checkbox('Run')
 if run:
-     main()
+    main()
+
 
 
 # camera = cv2.VideoCapture(0)
@@ -224,4 +225,4 @@ else:
         cap.release()
         cv2.destroyAllWindows()
     except:
-        cv2.destroyAllWindows()
+        pass

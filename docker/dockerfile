@@ -2,7 +2,24 @@ FROM python:3.9-slim
 
 
 RUN apt-get update
-RUN apt-get install libasound-dev libportaudio2 libportaudiocpp0 portaudio19-dev gcc mono-mcs ffmpeg libsm6 libxext6 -y && \
+RUN apt-get install libasound2-dev libportaudio2 libportaudiocpp0 portaudio19-dev gcc mono-mcs ffmpeg libsm6 libxext6  alsa-utils libqt5gui5 \
+    apt-utils \
+                                         fontconfig \
+                                         libxcb1 \
+                                         libxcb-glx0 \
+                                         x11-common \
+                                         x11-apps \
+                                         libx11-xcb-dev \
+                                         libxrender1 \
+                                         libxext6 \
+                                         libxkbcommon-x11-0 \
+                                         libglu1 \
+                                         libxcb-xinerama0 \
+                                         libxcb-image0 \
+                                         libxcb-render-util0 \
+                                         libxcb-util1 \
+                                         freeglut3-dev \
+                                         xauth -y && \
     rm -rf /var/lib/apt/lists/*
 RUN pip install pyaudio
 
